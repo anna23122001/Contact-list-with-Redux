@@ -1,0 +1,39 @@
+{
+  "contacts": [
+    {
+      "firstName": "Анна",
+      "lastName": "Рязанцева",
+      "email": "anna.riazantseva123321@gmail.com",
+      "phone": "+38060784592",
+      "id": "f9OcZQSEC3_lSBacU3xyy"
+    },
+    {
+      "firstName": "Dacota",
+      "lastName": "Blue",
+      "email": "anna.riazantseva123321@gmail.com",
+      "phone": "+38060784592",
+      "id": "vnN6lDtB6PZsHrwV8rUTb"
+    },
+    {
+      "firstName": "Anna",
+      "lastName": "Hatowe",
+      "email": "anna.riazantseva123321@gmail.com",
+      "phone": "+38060784592",
+      "id": "bzT5boajioGuJa6mBMrwX"
+    },
+    {
+      "firstName": "Ivan",
+      "lastName": "Franko",
+      "email": "",
+      "phone": "",
+      "id": "AFPUDXj"
+    },
+    {
+      "firstName": "Petro",
+      "lastName": "Sagaydachnyi",
+      "email": "",
+      "phone": "",
+      "id": "rQLMk2z"
+    }
+  ]
+}

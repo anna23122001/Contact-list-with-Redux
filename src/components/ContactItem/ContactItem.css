@@ -1,0 +1,35 @@
+.contact-item{
+    min-width: 300px;
+    max-width: 400px;
+    min-height: 30px;
+    margin: 15px 0 0 30px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.contact-item:hover {
+  transform: scale(1.02);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); 
+  }
+
+.delete-btn{
+    border: 1px solid black;
+    min-height: 30px;
+    min-width: 30px;
+    text-align: center;
+    padding-top: 10px;
+    display: inline-block;
+    margin: 0 10px 0 100px;
+}
+
+.delete-btn:hover {
+    border-color: red;
+    color: red;
+  }
+  
+.content{
+    min-width: 200px;
+    font-size: 20px;
+    padding-left: 20px;
+}

@@ -1,0 +1,56 @@
+form{
+    display: flex;
+    flex-direction: column;
+    margin: 50px 20px;
+}
+.input-item{
+    min-height: 40px;
+    max-width: 300px;
+    margin-top:10px;
+    font-size: 20px;
+    text-align: center;
+}
+.form-item-container{
+    display: flex;
+    justify-content: center;
+}
+.input-delete{
+    min-height: 40px; 
+    margin-top: 10px;
+    min-width: 35px;
+}
+.input-delete:hover {
+    border-color: red;
+    color: red;
+  }
+
+.delete{
+    background-color: #CD5C5C;
+    min-height: 70px;
+    min-width: 200px;
+    border-radius: 14px;
+    border: 1px solid grey;
+    font-size: 18px;
+    margin-top: 30px;
+    margin: auto;
+}
+.delete:hover {
+    transform: scale(1.01);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); 
+  }
+
+.save{
+    min-height: 70px;
+    min-width: 200px;
+    border-radius: 14px;
+    border: 1px solid grey;
+    font-size: 18px;
+    margin-top: 40px;
+    background-color: #8CCB5E;
+    margin: auto;
+}
+
+.save:hover {
+    transform: scale(1.01);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); 
+  }

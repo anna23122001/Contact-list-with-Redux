@@ -1,0 +1,27 @@
+.list-container{
+    text-align: center;
+    max-width: 450px;
+    min-width: 300px;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    
+}
+h1{
+    text-align: center;
+}
+.new {
+    background-color: #FBEC5D;
+    min-height: 70px;
+    min-width: 200px;
+    border-radius: 14px;
+    border: 1px solid grey;
+    font-size: 18px;
+    margin: auto;
+
+}
+
+.new:hover {
+    transform: scale(1.01);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
