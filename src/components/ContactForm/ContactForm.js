@@ -1,23 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { createContact, deleteContact, updateContact } from '../../store/actions/actions';
+import api from '../../contact-service'
 import './ContactForm.css';
 
-function ContactForm({ contactForEdit, onSubmit, onDelete }) {
-  
-  const [contact, setContact] = useState(contactForEdit);
+
+function ContactForm() {
+ const contactsForEdit = useSelector(store => store.contactsForEdit)
+ const dispatch = useDispatch();
+ const [contact, setContact] = useState(contactsForEdit);
 
   useEffect(() => {
-    setContact(contactForEdit);
-  }, [contactForEdit]);
-
-  function createEmptyContact() {
-    return {
-      id: '',
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-    };
-  }
+    setContact(contactsForEdit);
+  }, [contactsForEdit]);
 
   function onInputChange(event) {
     setContact((contact) => ({
@@ -28,8 +23,15 @@ function ContactForm({ contactForEdit, onSubmit, onDelete }) {
 
   function onFormSubmit(event) {
     event.preventDefault();
-    onSubmit(contact);
-  }
+    if (!contact.id) {
+      api.post('/', contact)
+      .then(({ data }) => dispatch(createContact(data)))
+      .catch((e) => console.log(e))
+    } else {
+      api.put(`/${contact.id}`, contact)
+      .then(({ data }) => dispatch(updateContact(data)))
+      .catch((e) => console.log(e))
+    }}
 
   function onClearField(event) {
     const sibling = event.target.parentNode.firstChild;
@@ -37,13 +39,16 @@ function ContactForm({ contactForEdit, onSubmit, onDelete }) {
       ...contact,
       [sibling.name]: '',
     }));
-  }
+  };
 
   function onContactDelete() {
-    onDelete(contact.id);
-    setContact(createEmptyContact());
+    api.delete(`/${contact.id}`)
+    .then(({status}) => {
+      return status
+    })
+    .catch((e) => console.log(e))
+    dispatch(deleteContact(contact.id));
   }
-
   return (
     <>
       <form className='form' onSubmit={onFormSubmit}>
@@ -60,7 +65,6 @@ function ContactForm({ contactForEdit, onSubmit, onDelete }) {
             X
           </span>
         </div>
-
         <div className='form-item-container'>
           <input
             className='input-item'
@@ -102,17 +106,14 @@ function ContactForm({ contactForEdit, onSubmit, onDelete }) {
             X
           </span>
         </div>
-
         <button type='submit' className='save'>
           Save
         </button>
-
         {contact.id ? (
           <button
             type='button'
             className='delete'
-            onClick={onContactDelete}
-          >
+            onClick={onContactDelete}>
             Delete
           </button>
         ) : (
