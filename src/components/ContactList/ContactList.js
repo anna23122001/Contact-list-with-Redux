@@ -15,7 +15,8 @@ function ContactList() {
 
   useEffect(() => {
     api.get('/')
-    .then(({data}) => dispatch(getContacts(data)))
+      .then(({ data }) => dispatch(getContacts(data)))
+      .catch((e) => console.log(e))
   }, [dispatch])
 
     return (

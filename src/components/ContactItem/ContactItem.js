@@ -12,6 +12,7 @@ function ContactItem({contact }) {
     .then(({status}) => {
       return status
     })
+    .catch((e) => console.log(e))
     dispatch(deleteContact(contact.id));
   }
 
