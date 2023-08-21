@@ -5,9 +5,11 @@ import './ContactForm.css';
 
 
 function ContactForm() {
- const contactsForEdit = useSelector(store => store.contactsForEdit)
- const dispatch = useDispatch();
- const [contact, setContact] = useState(contactsForEdit);
+  const contactsForEdit = useSelector(store => store.contactList.contactsForEdit);
+
+  const dispatch = useDispatch();
+  
+  const [contact, setContact] = useState(contactsForEdit);
 
   useEffect(() => {
     setContact(contactsForEdit);

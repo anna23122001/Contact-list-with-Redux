@@ -15,11 +15,9 @@ export const getContacts = createAsyncThunk(
     `${CONTACT_SLICE_NAME}/getContacts`,
     async function (_, { rejectWithValue }) {
         try {
-            const response = await api.get('/');
-            if (response.status >= 400) {
-                throw new Error(`Ooops...something went wrong: ${response.status}`)
-            }
-            const { data } = response;
+            const {data, status} = await api.get('/');
+            if (status >= 400) {
+                throw new Error(`Ooops...something went wrong: ${status}`)}
             return data;
         } catch (error) {
             return rejectWithValue(error.message)
@@ -29,13 +27,13 @@ export const getContacts = createAsyncThunk(
 
 export const updateContact = createAsyncThunk(
     `${CONTACT_SLICE_NAME}/updateContact`,
-    async function (contact, { rejectWithValue, dispatch }) {
+    async function (contact, { rejectWithValue }) {
         try {
-            const { status } = await api.put(`/${contact.id}`, contact)
+            const {data, status } = await api.put(`/${contact.id}`, contact)
             if (status >= 400) {
                 throw new Error(`Ooops...something went wrong: ${status}`)
             }
-            dispatch(changeContact(contact))
+            return data
         } catch (error) {
             return rejectWithValue(error.message)
         }
@@ -44,13 +42,14 @@ export const updateContact = createAsyncThunk(
 
 export const deleteContact = createAsyncThunk(
     `${CONTACT_SLICE_NAME}/deleteContact`,
-    async function (id, { rejectWithValue, dispatch }) {
+    async function (id, { rejectWithValue, dispatch}) {
         try {
-            const { status } = await api.delete(`${id}`);
+            const { data, status } = await api.delete(`${id}`);
             if (status >= 400) {
                 throw new Error(`Ooops...something went wrong: ${status}`)
             }
             dispatch(removeContact(id))
+            return data
         } catch (error) {
             return rejectWithValue(error.message)
         }
@@ -62,7 +61,7 @@ export const saveContact = createAsyncThunk(
     async function (newContact, { rejectWithValue }) {
         try {
             const { data, statusText } = await api.post('/', newContact);
-            if (statusText !== 'Ok') {
+            if (statusText !== 'Created') {
                 throw new Error(`Ooops...something went wrong: ${statusText}`)
             }
             return data;
@@ -70,7 +69,7 @@ export const saveContact = createAsyncThunk(
             return rejectWithValue(error.message)
         }
     }
-)
+);
 
 const contactSlice = createSlice({
     name: CONTACT_SLICE_NAME,
@@ -82,12 +81,9 @@ const contactSlice = createSlice({
         selectContact(state, {payload}) {
             state.contactsForEdit = payload;
         },
-        changeContact(state, {payload}) {
-            state.contacts = state.contacts.map((contact) => contact.id === payload.id ? payload : contact)
-        },
         removeContact(state, { payload }) {
             state.contacts = 
-                state.contacts.filter(movie => movie.id !== payload)
+                state.contacts.filter(contact => contact.id !== payload)
         }
     },
     extraReducers: {
@@ -101,23 +97,25 @@ const contactSlice = createSlice({
             state.isFetching = false;
             state.error = null;
         },
+        [updateContact.fulfilled]: (state, { payload }) => {
+            state.contacts = state.contacts.map(contact =>
+            contact.id === payload.id ? payload : contact);
+            state.isFetching = false;
+            state.error = null;
+        },
 
         [getContacts.rejected]: setError,
         [updateContact.rejected]: setError,
         [deleteContact.rejected]: setError,
         [saveContact.rejected]: setError,
-        [createNewContact.rejected]: setError,
-        [selectContact.rejected]: setError,
 
         [getContacts.pending]: setFetching,
         [updateContact.pending]: setFetching,
         [deleteContact.pending]: setFetching,
-        [saveContact.pending]: setFetching,
-        [createNewContact.pending]: setFetching,
-        [selectContact.pending]: setFetching,
+        [saveContact.pending]: setFetching
     }
 })
 
-export const { createNewContact, selectContact, changeContact, removeContact } = contactSlice.actions;
+export const { createNewContact, selectContact, removeContact } = contactSlice.actions;
 
 export default contactSlice.reducer
