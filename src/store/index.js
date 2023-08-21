@@ -1,5 +1,12 @@
-import { createStore } from 'redux';
-import contactReducer from './reducers/contactReducer';
+import { configureStore } from '@reduxjs/toolkit';
+import logger from 'redux-logger';
+import contactReducer from './slices/contactSlice';
 
-export default createStore(contactReducer);
+
+export default configureStore({
+    reducer: {
+        contactList: contactReducer,
+    }
+
+});
 

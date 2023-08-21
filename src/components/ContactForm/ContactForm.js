@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { createContact, deleteContact, updateContact } from '../../store/actions/actions';
-import api from '../../contact-service'
+import { saveContact, deleteContact, updateContact } from '../../store/slices/contactSlice';
 import './ContactForm.css';
 
 
@@ -24,13 +23,9 @@ function ContactForm() {
   function onFormSubmit(event) {
     event.preventDefault();
     if (!contact.id) {
-      api.post('/', contact)
-      .then(({ data }) => dispatch(createContact(data)))
-      .catch((e) => console.log(e))
+       dispatch(saveContact(contact))
     } else {
-      api.put(`/${contact.id}`, contact)
-      .then(({ data }) => dispatch(updateContact(data)))
-      .catch((e) => console.log(e))
+      dispatch(updateContact(contact))
     }}
 
   function onClearField(event) {
@@ -42,11 +37,6 @@ function ContactForm() {
   };
 
   function onContactDelete() {
-    api.delete(`/${contact.id}`)
-    .then(({status}) => {
-      return status
-    })
-    .catch((e) => console.log(e))
     dispatch(deleteContact(contact.id));
   }
   return (

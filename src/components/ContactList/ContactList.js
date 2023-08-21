@@ -1,23 +1,24 @@
 import React, {useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ContactItem from '../ContactItem/ContactItem';
-import api from '../../contact-service';
 import { 
-  addNewContact,
+  createNewContact,
   getContacts
-} from '../../store/actions/actions';
+} from '../../store/slices/contactSlice';
 import './ContactList.css';
-
+import { createEmptyContact } from '../../model/constants'
 
 function ContactList() {
   const dispatch = useDispatch();
   const contacts = useSelector((store) => store.contacts);
 
   useEffect(() => {
-    api.get('/')
-      .then(({ data }) => dispatch(getContacts(data)))
-      .catch((e) => console.log(e))
+   dispatch(getContacts())  
   }, [dispatch])
+  
+  // function createNewContact() {
+  //    return createEmptyContact()
+  //  }
 
     return (
     <div className='list-container'>
@@ -28,7 +29,7 @@ function ContactList() {
               contact={contact}/>
         )})}
            <button 
-               onClick={() => dispatch(addNewContact())}
+               onClick={() => dispatch(createNewContact())}
                className='new'>New</button>
     </div>
   )}
