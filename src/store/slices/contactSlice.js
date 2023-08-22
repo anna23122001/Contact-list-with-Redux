@@ -42,14 +42,13 @@ export const updateContact = createAsyncThunk(
 
 export const deleteContact = createAsyncThunk(
     `${CONTACT_SLICE_NAME}/deleteContact`,
-    async function (id, { rejectWithValue, dispatch}) {
+    async function (id, { rejectWithValue}) {
         try {
-            const { data, status } = await api.delete(`${id}`);
+            const { status } = await api.delete(`${id}`);
             if (status >= 400) {
                 throw new Error(`Ooops...something went wrong: ${status}`)
             }
-            dispatch(removeContact(id))
-            return data
+            return id;
         } catch (error) {
             return rejectWithValue(error.message)
         }
@@ -60,9 +59,9 @@ export const saveContact = createAsyncThunk(
     `${CONTACT_SLICE_NAME}/saveContact`,
     async function (newContact, { rejectWithValue }) {
         try {
-            const { data, statusText } = await api.post('/', newContact);
-            if (statusText !== 'Created') {
-                throw new Error(`Ooops...something went wrong: ${statusText}`)
+            const { data, status } = await api.post('/', newContact);
+            if (status >= 400) {
+                throw new Error(`Ooops...something went wrong: ${status}`)
             }
             return data;
         } catch (error) {
@@ -80,10 +79,6 @@ const contactSlice = createSlice({
         },
         selectContact(state, {payload}) {
             state.contactsForEdit = payload;
-        },
-        removeContact(state, { payload }) {
-            state.contacts = 
-                state.contacts.filter(contact => contact.id !== payload)
         }
     },
     extraReducers: {
@@ -103,6 +98,11 @@ const contactSlice = createSlice({
             state.isFetching = false;
             state.error = null;
         },
+        [deleteContact.fulfilled]: (state, { payload }) => {
+            state.contacts = state.contacts.filter((user) => user.id !== payload);
+            state.isFetching = false;
+            state.error = null;
+        },
 
         [getContacts.rejected]: setError,
         [updateContact.rejected]: setError,
@@ -116,6 +116,6 @@ const contactSlice = createSlice({
     }
 })
 
-export const { createNewContact, selectContact, removeContact } = contactSlice.actions;
+export const { createNewContact, selectContact } = contactSlice.actions;
 
 export default contactSlice.reducer
