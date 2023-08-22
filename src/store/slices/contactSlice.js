@@ -99,7 +99,7 @@ const contactSlice = createSlice({
             state.error = null;
         },
         [deleteContact.fulfilled]: (state, { payload }) => {
-            state.contacts = state.contacts.filter((user) => user.id !== payload);
+            state.contacts = state.contacts.filter((contact) => contact.id !== payload);
             state.isFetching = false;
             state.error = null;
         },
